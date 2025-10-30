@@ -1,0 +1,8 @@
+repo: "owner/repo"
+batch_size: 200
+llm:
+  model: "gpt-5"
+  temperature: 0.0
+publish:
+  confluence_space: "DOCS"
+  confluence_parent_page_id: 123456
