@@ -18,14 +18,22 @@ def build_prompt(version, commits, issues, audience):
     return data
 
 def call_llm(prompt, model='gpt-5', temperature=0.0):
-    openai.api_key = env('OPENAI_API_KEY')
-    resp = openai.ChatCompletion.create(
+    # Allow OpenRouter API key and endpoint
+    import os
+    import openai
+    api_key = env('OPENROUTER_API_KEY') or env('OPENAI_API_KEY')
+    # If using OpenRouter, must point base_url to their endpoint
+    if env('OPENROUTER_API_KEY'):
+        client = openai.OpenAI(api_key=api_key, base_url="https://openrouter.ai/api/v1")
+    else:
+        client = openai.OpenAI(api_key=api_key)
+    resp = client.chat.completions.create(
         model=model,
         messages=[{'role': 'user', 'content': prompt}],
         temperature=temperature,
-        max_tokens=1500,
+        max_tokens=1500
     )
-    return resp['choices'][0]['message']['content']
+    return resp.choices[0].message.content
 
 def assemble_sections(llm_output: str) -> str:
     # If the LLM already returns markdown, use it directly. Optionally post-process.

@@ -1,7 +1,7 @@
-repo: "owner/repo"
+repo: "micorpx/openAI"
 batch_size: 200
 llm:
-  model: "gpt-5"
+  model: "minimax/minimax-m2:free"
   temperature: 0.0
 publish:
   confluence_space: "DOCS"
